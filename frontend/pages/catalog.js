@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import axios from 'axios';
-import { useCart } from '../../context/CartContext'
+import {usecart} from '../context/CartContext'
 import {
   buildQueryKey,
   categories,

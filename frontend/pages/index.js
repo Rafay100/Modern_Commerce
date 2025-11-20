@@ -5,7 +5,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import useSWR from 'swr';
 import axios from 'axios';
-import { useCart } from '../context/CartContext'
+import {usecart } from '../context/CartContext'
 import { buildQueryKey, categories, defaultFilters, priceRanges, sortOptions } from '../lib/catalog';
 import AIRecommendations from '../components/AIRecommendations';
 

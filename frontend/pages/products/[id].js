@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import useSWR from 'swr';
 import axios from 'axios';
-import { useCart } from '../context/CartContext'
+import { useCart } from '../../context/CartContext';
 import AIProductInsights from '../../components/AIProductInsights';
 import AIRecommendations from '../../components/AIRecommendations';
 
