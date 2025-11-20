@@ -1,38 +1,41 @@
-import { useState } from 'react'
-import { useRouter } from 'next/router'
-import Link from 'next/link'
-import useSWR from 'swr'
-import axios from 'axios'
-import { useCart } from '../../context/CartContext'
-import AIProductInsights from '../../components/AIProductInsights'
-import AIRecommendations from '../../components/AIRecommendations'
+'use client';
 
-const fetcher = url => axios.get(url).then(r => r.data)
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import useSWR from 'swr';
+import axios from 'axios';
+import { useCart } from '../context/CartContext'
+import AIProductInsights from '../../components/AIProductInsights';
+import AIRecommendations from '../../components/AIRecommendations';
+
+const fetcher = url => axios.get(url).then(r => r.data);
 
 export default function ProductDetailPage() {
-  const router = useRouter()
-  const { id } = router.query
-  const { addToCart } = useCart()
-  const [quantity, setQuantity] = useState(1)
+  const router = useRouter();
+  const { id } = router.query;
+  const { addToCart } = useCart();
+  const [quantity, setQuantity] = useState(1);
 
-  const { data: product, error } = useSWR(id ? `/api/products/${id}` : null, fetcher)
+  const { data: product, error } = useSWR(id ? `/api/products/${id}` : null, fetcher);
   const { data: related } = useSWR(
     product?.category ? `/api/products?category=${product.category}&limit=4` : null,
     fetcher
-  )
-  const relatedItems = Array.isArray(related) ? related : related?.products || []
+  );
+
+  const relatedItems = Array.isArray(related) ? related : related?.products || [];
 
   if (error) {
-    return <div className="page-state error">Failed to load product.</div>
+    return <div className="page-state error">Failed to load product.</div>;
   }
 
   if (!product) {
-    return <div className="page-state loading">Loading product...</div>
+    return <div className="page-state loading">Loading product...</div>;
   }
 
   const handleAdd = () => {
-    addToCart(product, quantity)
-  }
+    addToCart(product, quantity);
+  };
 
   return (
     <div className="app-shell page product-detail">
@@ -46,6 +49,7 @@ export default function ProductDetailPage() {
         <div className="detail-media">
           <img src={product.image || '/images/placeholder.png'} alt={product.name} />
         </div>
+
         <div className="detail-info">
           <p className="eyebrow">{product.brand}</p>
           <h1>{product.name}</h1>
@@ -53,7 +57,9 @@ export default function ProductDetailPage() {
           <p className="description">{product.description}</p>
 
           <div className="detail-meta">
-            <span>{product.rating?.toFixed(1) ?? '4.8'} · {product.reviewCount || 0} reviews</span>
+            <span>
+              {product.rating?.toFixed(1) ?? '4.8'} · {product.reviewCount || 0} reviews
+            </span>
             <span>{product.stock > 0 ? `${product.stock} in stock` : 'Backorder'}</span>
           </div>
 
@@ -77,7 +83,9 @@ export default function ProductDetailPage() {
                 onChange={e => setQuantity(Math.max(parseInt(e.target.value, 10) || 1, 1))}
               />
             </label>
-            <button className="primary" onClick={handleAdd}>Add to cart</button>
+            <button className="primary" onClick={handleAdd}>
+              Add to cart
+            </button>
           </div>
         </div>
       </div>
@@ -90,6 +98,7 @@ export default function ProductDetailPage() {
               <h3>More in {product.category}</h3>
             </div>
           </div>
+
           <div className="product-grid">
             {relatedItems
               .filter(item => item._id !== product._id)
@@ -99,13 +108,18 @@ export default function ProductDetailPage() {
                   <div className="card-media">
                     <img src={item.image || '/images/placeholder.png'} alt={item.name} />
                   </div>
+
                   <div className="card-body">
                     <h4>{item.name}</h4>
+
                     <div className="meta">
                       <span>${item.price.toFixed(2)}</span>
                       <Link href={`/products/${item._id}`}>View</Link>
                     </div>
-                    <button className="primary" onClick={() => addToCart(item)}>Quick add</button>
+
+                    <button className="primary" onClick={() => addToCart(item)}>
+                      Quick add
+                    </button>
                   </div>
                 </article>
               ))}
@@ -115,6 +129,5 @@ export default function ProductDetailPage() {
 
       <AIRecommendations currentProduct={product} />
     </div>
-  )
+  );
 }
-

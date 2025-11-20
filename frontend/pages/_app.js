@@ -1,3 +1,4 @@
+'use client';
 import '../styles/globals.css'
 import { CartProvider } from '../context/CartContext'
 import TopNav from '../components/TopNav'

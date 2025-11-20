@@ -120,3 +120,4 @@ Fiverr gig text:
 
 This seed is intended as a starting point. You can extend it with authentication, Stripe payments, admin panel, product images, and more.
 "# Modern_Commerce" 
+"# Modern_Commerce" 

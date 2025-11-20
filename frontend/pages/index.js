@@ -1,13 +1,15 @@
-import { useMemo, useState } from 'react'
-import Head from 'next/head'
-import Link from 'next/link'
-import useSWR from 'swr'
-import axios from 'axios'
-import { useCart } from '../context/CartContext'
-import { buildQueryKey, categories, defaultFilters, priceRanges, sortOptions } from '../lib/catalog'
-import AIRecommendations from '../components/AIRecommendations'
+'use client';
 
-const fetcher = url => axios.get(url).then(r => r.data)
+import { useMemo, useState } from 'react';
+import Head from 'next/head';
+import Link from 'next/link';
+import useSWR from 'swr';
+import axios from 'axios';
+import { useCart } from '../context/CartContext'
+import { buildQueryKey, categories, defaultFilters, priceRanges, sortOptions } from '../lib/catalog';
+import AIRecommendations from '../components/AIRecommendations';
+
+const fetcher = url => axios.get(url).then(r => r.data);
 
 const lookbookCollections = [
   {
@@ -28,7 +30,7 @@ const lookbookCollections = [
     accent: 'kitchen',
     category: 'kitchen'
   }
-]
+];
 
 const testimonials = [
   {
@@ -43,33 +45,33 @@ const testimonials = [
     quote: 'Customer support helped me swap a size within minutes. Easily my favorite modern shop.',
     author: 'Camila Duarte · Toronto'
   }
-]
+];
 
 export default function Home() {
-  const { addToCart, subtotal, totalItems } = useCart()
-  const [filters, setFilters] = useState(() => ({ ...defaultFilters }))
+  const { addToCart, subtotal, totalItems } = useCart();
+  const [filters, setFilters] = useState(() => ({ ...defaultFilters }));
 
   const { data, error, isValidating } = useSWR(buildQueryKey(filters), fetcher, {
     keepPreviousData: true
-  })
+  });
 
   const products = useMemo(() => {
-    if (!data) return []
-    if (Array.isArray(data)) return data
-    return data.products || []
-  }, [data])
+    if (!data) return [];
+    if (Array.isArray(data)) return data;
+    return data.products || [];
+  }, [data]);
 
-  const stats = useMemo(() => (data && !Array.isArray(data) ? data.stats : null), [data])
+  const stats = useMemo(() => (data && !Array.isArray(data) ? data.stats : null), [data]);
 
-  const heroProduct = products.find(p => p.featured) || products[0]
-  const featuredRail = products.filter(p => p.featured).slice(0, 3)
+  const heroProduct = products.find(p => p.featured) || products[0];
+  const featuredRail = products.filter(p => p.featured).slice(0, 3);
 
   const handleInputChange = (field, value) => {
-    setFilters(prev => ({ ...prev, [field]: value }))
-  }
+    setFilters(prev => ({ ...prev, [field]: value }));
+  };
 
   if (error) {
-    return <div className="page-state error">We couldn&apos;t load products right now.</div>
+    return <div className="page-state error">We couldn&apos;t load products right now.</div>;
   }
 
   return (
@@ -148,6 +150,7 @@ export default function Home() {
               ))}
             </div>
           </div>
+
           <div className="filter-grid">
             <div className="filter-group">
               <label htmlFor="priceRange">Price range</label>
@@ -163,6 +166,7 @@ export default function Home() {
                 ))}
               </select>
             </div>
+
             <div className="filter-group">
               <label htmlFor="sort">Sort</label>
               <select
@@ -177,6 +181,7 @@ export default function Home() {
                 ))}
               </select>
             </div>
+
             <label className="toggle">
               <input
                 type="checkbox"
@@ -186,6 +191,7 @@ export default function Home() {
               <span>Show featured only</span>
             </label>
           </div>
+
           {stats && (
             <div className="stats">
               <p>Collection range · ${stats.min?.toFixed(0) ?? 0} – ${stats.max?.toFixed(0) ?? 0}</p>
@@ -214,9 +220,7 @@ export default function Home() {
           {!isValidating && products.length === 0 && (
             <div className="empty-state">
               <p>No products match those filters yet.</p>
-              <button onClick={() => setFilters({ ...defaultFilters })}>
-                Reset filters
-              </button>
+              <button onClick={() => setFilters({ ...defaultFilters })}>Reset filters</button>
             </div>
           )}
 
@@ -227,23 +231,30 @@ export default function Home() {
                   {product.badge && <span className="badge">{product.badge}</span>}
                   <img src={product.image || '/images/placeholder.png'} alt={product.name} />
                 </div>
+
                 <div className="card-body">
                   <div className="card-top">
                     <p className="eyebrow">{product.brand}</p>
                     <p className="rating">{product.rating?.toFixed(1) ?? '4.8'} ★</p>
                   </div>
+
                   <h4>{product.name}</h4>
                   <p className="description">{product.description}</p>
+
                   <div className="meta">
                     <span>${product.price.toFixed(2)}</span>
                     <small>{product.stock > 0 ? `${product.stock} in stock` : 'Backorder'}</small>
                   </div>
+
                   <div className="tags">
                     {(product.tags || []).slice(0, 3).map(tag => (
                       <span key={tag}>{tag}</span>
                     ))}
                   </div>
-                  <button className="primary" onClick={() => addToCart(product)}>Add to cart</button>
+
+                  <button className="primary" onClick={() => addToCart(product)}>
+                    Add to cart
+                  </button>
                 </div>
               </article>
             ))}
@@ -257,7 +268,9 @@ export default function Home() {
                 <p className="eyebrow">{item.category}</p>
                 <h4>{item.name}</h4>
                 <p>{item.description}</p>
-                <button onClick={() => addToCart(item)}>Quick add · ${item.price.toFixed(0)}</button>
+                <button onClick={() => addToCart(item)}>
+                  Quick add · ${item.price.toFixed(0)}
+                </button>
               </div>
             ))}
           </section>
@@ -289,6 +302,7 @@ export default function Home() {
             <h3>Weekly drops from independent designers.</h3>
             <p>Limited releases, restocks, and essays on mindful retail.</p>
           </div>
+
           <form onSubmit={e => e.preventDefault()}>
             <input placeholder="Email address" type="email" required />
             <button type="submit">Notify me</button>
@@ -300,5 +314,5 @@ export default function Home() {
         )}
       </div>
     </>
-  )
+  );
 }
