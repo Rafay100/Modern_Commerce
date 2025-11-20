@@ -1,0 +1,10 @@
+Gig Title:
+I will build a full-stack eCommerce store with Next.js + Node.js + MongoDB
+
+Gig Description (short):
+I will build a responsive, production-ready eCommerce store using Next.js (React) for the frontend and Node.js + Express with MongoDB for the backend. Features include product listing, cart, checkout flow (mock/Stripe-ready), order history, and admin endpoints. I will provide deployment instructions and a professional README so you can run it on Vercel + Render/Heroku.
+
+Packages:
+- Basic — Single product landing + static checkout — 3 days
+- Standard — Full storefront + backend (no payment integration) — 7 days
+- Premium — Full store + Stripe + Admin endpoints + deployment help — 10 days
